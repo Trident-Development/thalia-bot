@@ -10,4 +10,4 @@ Use [this link](https://discord.com/api/oauth2/authorize?client_id=9908776322352
 `help` Display the list of commands and their usages
 
 ### Dev Setup
-Please checkout the [setup doc](./docs/setup.md) for development setup instructions!
+Please check out the [setup doc](./docs/setup.md) for development setup instructions!
