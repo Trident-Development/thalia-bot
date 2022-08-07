@@ -2,11 +2,11 @@ import discord
 from discord.ext import commands
 from discord_slash import cog_ext
 from discord_slash import SlashContext
-from pyjokes import get_joke
+from joke_api import get_geek_joke
 
 
 class Descriptions:
-    TELL_JOKE = "Send a random programming joke"
+    TELL_GEEK_JOKE = "Send a random programming joke"
     HELP = "Display the list of commands and their usages"
 
 
@@ -14,20 +14,18 @@ class Slash(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-
     @cog_ext.cog_slash(name="tell-joke", description=Descriptions.TELL_JOKE)
     async def _tell_joke(self, ctx: SlashContext):
-        await ctx.send(content=get_joke(language="en", category="neutral"))
-
+        await ctx.send(content=get_geek_joke())
 
     @cog_ext.cog_slash(name="help", description=Descriptions.HELP)
     async def _help(self, ctx: SlashContext):
         help_msg = f"""
-        `tell-joke` - {Descriptions.TELL_JOKE}
+        `tell-geek-joke` - {Descriptions.TELL_GEEK_JOKE}
         `help` - {Descriptions.HELP}
         """
         embed_content = discord.Embed(
-            title="Here's what you can do with GeekJoke!",
+            title="Here's what you can do with Thalia!",
             type="rich",
             description=help_msg,
         )
