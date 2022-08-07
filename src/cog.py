@@ -14,8 +14,8 @@ class Slash(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @cog_ext.cog_slash(name="tell-joke", description=Descriptions.TELL_JOKE)
-    async def _tell_joke(self, ctx: SlashContext):
+    @cog_ext.cog_slash(name="tell-geek-joke", description=Descriptions.TELL_GEEK_JOKE)
+    async def _tell_geek_joke(self, ctx: SlashContext):
         await ctx.send(content=get_geek_joke())
 
     @cog_ext.cog_slash(name="help", description=Descriptions.HELP)
