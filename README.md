@@ -1,4 +1,4 @@
-# GeekJoke
+# Thalia Bot
 
 Just a simple Discord bot to tell a random programming joke :D
 
