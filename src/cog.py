@@ -35,7 +35,9 @@ class Slash(commands.Cog):
     )
     async def _setup_daily_joke(self, ctx: SlashContext):
         self.channel_ids.add(ctx.channel_id)
-        await ctx.send("daily joke is successfully set up!")
+        await ctx.send(
+            "daily joke is successfully set up! You will receive a new joke every day at 11:00 am PST in this channel."
+        )
 
     @cog_ext.cog_slash(
         name="turn-off-daily-joke", description=Descriptions.TURN_OFF_DAILY_JOKE
@@ -43,7 +45,9 @@ class Slash(commands.Cog):
     async def _turn_off_daily_joke(self, ctx: SlashContext):
         if ctx.channel_id in self.channel_ids:
             self.channel_ids.remove(ctx.channel_id)
-            await ctx.send("daily joke is now removed!")
+            await ctx.send(
+                "daily joke is now removed! You will no longer receive a joke everyday in this channel."
+            )
         else:
             await ctx.send(
                 "This channel does not have any daily joke setup", hidden=True
