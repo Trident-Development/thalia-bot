@@ -11,7 +11,10 @@ from utils.time_util import seconds_until
 
 
 class Descriptions:
-    SETUP_DAILY_JOKE = "The bot will send a joke everyday at 11:00 am PST"
+    SETUP_DAILY_JOKE = (
+        "The bot will send a joke everyday at 11:00 am PST in the current channel"
+    )
+    TURN_OFF_DAILY_JOKE = "Turn off the current daily joke if there is any"
     TELL_GEEK_JOKE = "Send a random programming joke"
     HELP = "Display the list of commands and their usages"
 
@@ -32,7 +35,19 @@ class Slash(commands.Cog):
     )
     async def _setup_daily_joke(self, ctx: SlashContext):
         self.channel_ids.add(ctx.channel_id)
-        await ctx.send("set up successfully!")
+        await ctx.send("daily joke is successfully set up!")
+
+    @cog_ext.cog_slash(
+        name="turn-off-daily-joke", description=Descriptions.TURN_OFF_DAILY_JOKE
+    )
+    async def _turn_off_daily_joke(self, ctx: SlashContext):
+        if ctx.channel_id in self.channel_ids:
+            self.channel_ids.remove(ctx.channel_id)
+            await ctx.send("daily joke is now removed!")
+        else:
+            await ctx.send(
+                "This channel does not have any daily joke setup", hidden=True
+            )
 
     @cog_ext.cog_slash(name="help", description=Descriptions.HELP)
     async def _help(self, ctx: SlashContext):
