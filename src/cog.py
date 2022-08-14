@@ -1,15 +1,18 @@
+import asyncio
+
 import discord
 from discord.ext import commands
 from discord.ext import tasks
 from discord.ext.commands import Bot
 from discord_slash import cog_ext
 from discord_slash import SlashContext
-from pyjokes import get_joke
+from joke_api import get_geek_joke
+from utils.time_util import seconds_until
 
 
 class Descriptions:
-    TELL_JOKE = "Send a random programming joke"
     SETUP_DAILY_JOKE = "The bot will send a joke everyday at 11:00 am PST"
+    TELL_GEEK_JOKE = "Send a random programming joke"
     HELP = "Display the list of commands and their usages"
 
 
@@ -20,9 +23,9 @@ class Slash(commands.Cog):
 
         self._tell_daily_joke.start()
 
-    @cog_ext.cog_slash(name="tell-joke", description=Descriptions.TELL_JOKE)
-    async def _tell_joke(self, ctx: SlashContext):
-        await ctx.send(content=get_joke(language="en", category="neutral"))
+    @cog_ext.cog_slash(name="tell-geek-joke", description=Descriptions.TELL_GEEK_JOKE)
+    async def _tell_geek_joke(self, ctx: SlashContext):
+        await ctx.send(content=get_geek_joke())
 
     @cog_ext.cog_slash(
         name="setup-daily-joke", description=Descriptions.SETUP_DAILY_JOKE
@@ -34,23 +37,25 @@ class Slash(commands.Cog):
     @cog_ext.cog_slash(name="help", description=Descriptions.HELP)
     async def _help(self, ctx: SlashContext):
         help_msg = f"""
-        `tell-joke` - {Descriptions.TELL_JOKE}
+        `tell-geek-joke` - {Descriptions.TELL_GEEK_JOKE}
         `setup-daily-joke` - {Descriptions.SETUP_DAILY_JOKE}
         `help` - {Descriptions.HELP}
         """
         embed_content = discord.Embed(
-            title="Here's what you can do with GeekJoke!",
+            title="Here's what you can do with Thalia!",
             type="rich",
             description=help_msg,
         )
         await ctx.send(embed=embed_content)
 
-    @tasks.loop(seconds=5)
+    @tasks.loop(seconds=1)
     async def _tell_daily_joke(self):
-        message = "What's up brogrammers? Here's the joke of the day:\n"
+        await asyncio.sleep(seconds_until(11, 00))
+
+        message = "_What's up brogrammers? Here's the joke of the day:_\n"
         for channel_id in self.channel_ids:
             channel = self.bot.get_channel(channel_id)
-            await channel.send(message)
+            await channel.send(message + f"**{get_geek_joke()}**")
 
 
 def setup(bot):
