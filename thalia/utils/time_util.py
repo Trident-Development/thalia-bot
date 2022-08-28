@@ -1,7 +1,7 @@
 import datetime
 
 
-def seconds_until(hours, minutes):
+def seconds_until(hours: float, minutes: float) -> float:
     given_time = datetime.time(hours, minutes)
     now = datetime.datetime.now()
     future_exec = datetime.datetime.combine(now, given_time)

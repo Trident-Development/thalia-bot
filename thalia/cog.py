@@ -6,8 +6,9 @@ from discord.ext import tasks
 from discord.ext.commands import Bot
 from discord_slash import cog_ext
 from discord_slash import SlashContext
-from joke_api import get_geek_joke
-from utils.time_util import seconds_until
+
+from thalia.joke_api import get_geek_joke
+from thalia.utils.time_util import seconds_until
 
 
 class Descriptions:
@@ -69,7 +70,7 @@ class Slash(commands.Cog):
 
     @tasks.loop(seconds=1)
     async def _tell_daily_joke(self):
-        await asyncio.sleep(seconds_until(11, 00))
+        await asyncio.sleep(seconds_until(12, 57))
 
         message = "_What's up brogrammers? Here's the joke of the day:_\n"
         for channel_id in self.channel_ids:
