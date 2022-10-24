@@ -20,7 +20,7 @@ A complete guild to setup your development environment :D
 
 ### Requirements
 
-`python` version `3.8` or higher.
+`python` version `3.9` or higher.
 
 Make sure you also already installed `pip` and `venv` for your Python.
 

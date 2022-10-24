@@ -23,8 +23,8 @@ class Slash(commands.Cog):
         await tell_geek_joke(ctx)
 
     @cog_ext.cog_slash(name="setup-daily-joke", description=SETUP_DAILY_JOKE)
-    async def _setup_daily_joke(self, ctx: SlashContext):
-        await setup_daily_joke(ctx)
+    async def _setup_daily_joke(self, ctx: SlashContext, timestamp: str):
+        await setup_daily_joke(ctx, timestamp)
 
     @cog_ext.cog_slash(name="turn-off-daily-joke", description=TURN_OFF_DAILY_JOKE)
     async def _turn_off_daily_joke(self, ctx: SlashContext):
