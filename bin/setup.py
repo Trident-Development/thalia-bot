@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
+# flake8: noqa
 import os
 import subprocess
 import sys
 import traceback
-
 
 _VENV_DIR = ".venv"
 
@@ -14,11 +14,13 @@ def is_win():
 
 def check_py_version(major: int, minor: int) -> None:
     pyver = sys.version_info
-    if pyver.major != major or pyver.minor != minor:
+    if pyver.major != major or pyver.minor < minor:
         print(
+            "\033[91m"
             f"Your Python version is {pyver.major}.{pyver.minor}. "
-            f"Python {major}.{minor} is required!\n"
+            f"Python version >= {major}.{minor} is required!\n"
             "Aborting setup process!"
+            "\033[0m"
         )
         sys.exit()
 
@@ -26,23 +28,30 @@ def check_py_version(major: int, minor: int) -> None:
 def create_venv() -> None:
     if os.environ.get("VIRTUAL_ENV", "").strip():
         return
+    print("Creating virtual environment...\n")
     subprocess.run([sys.executable, "-m", "venv", _VENV_DIR])
 
 
 def perform_installations() -> None:
     print("\033[96mInstalling pip requirements...\033[0m\n")
-    venv_pip = f"{_VENV_DIR}/bin/pip"
+    if is_win():
+        venv_pip = f"{_VENV_DIR}/Scripts/pip"
+    else:
+        venv_pip = f"{_VENV_DIR}/bin/pip"
+
     subprocess.run([venv_pip, "install", "-r", "requirements-dev.txt"])
     subprocess.run([venv_pip, "install", "-r", "requirements.txt"])
 
     print("\033[96m\nInstalling precommit hook...\033[0m\n")
-    venv_precommit = f"{_VENV_DIR}/bin/pre-commit"
+    venv_precommit = (
+        f"{_VENV_DIR}/Scripts/pre-commit" if is_win() else f"{_VENV_DIR}/bin/pre-commit"
+    )
     subprocess.run([venv_precommit, "install"])
 
 
 def main():
     try:
-        check_py_version(3, 10)
+        check_py_version(3, 8)
         create_venv()
         perform_installations()
     except:
