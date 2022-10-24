@@ -51,7 +51,7 @@ def perform_installations() -> None:
 
 def main():
     try:
-        check_py_version(3, 8)
+        check_py_version(3, 9)
         create_venv()
         perform_installations()
     except:
